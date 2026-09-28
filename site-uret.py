@@ -74,7 +74,7 @@ sayfa = f"""<!doctype html>
 <html lang="tr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Model Testleri — {len(S)} yapay zekâ, 3 görev</title>
-<meta name="description" content="Claude Sonnet 5.5, Opus 4.6, Sonnet 4.6, Gemini 3.8 Flash, Gemini 3.1 Pro ve Space Bunny aynı üç kodlama görevinde; gizli testlerle puanlandı.">
+<meta name="description" content="Claude Sonnet 5.5, Opus 4.6, Sonnet 4.6, Gemini 3.8 Flash, ve Gemini 3.1 Pro aynı üç kodlama görevinde; gizli testlerle puanlandı.">
 <style>
 :root{{--bg:#0f1117;--kart:#171a23;--cizgi:#262b38;--yazi:#e6e8ee;--soluk:#8b92a5;--vurgu:#d97757;--iyi:#4fb477;--kotu:#e5484d}}
 *{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--yazi);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}}

@@ -298,56 +298,5 @@
     0
    ]
   }
- },
- "space-bunny": {
-  "1": {
-   "gizli": [
-    0,
-    1
-   ],
-   "kendi_testi": [
-    0,
-    1
-   ]
-  },
-  "2": {
-   "kontroller": {
-    "81_hucre": true,
-    "once_null": true,
-    "on_mayin": true,
-    "ilk_tik_guvenli": true,
-    "zincirleme_acilma": true,
-    "sayilar_dogru": true,
-    "bayrak_koy": true,
-    "bayrakli_acilmaz": true,
-    "bayrak_kaldir": true,
-    "kazandin": true,
-    "bitince_donar": true,
-    "yeni_oyun": true,
-    "kaybettin": true,
-    "kaybedince_donar": true,
-    "konsol_hatasi_yok": true,
-    "dis_kaynak_yok": true
-   },
-   "notlar": [],
-   "puan": "16/16"
-  },
-  "3": {
-   "test_dosyasi_ayni": true,
-   "gorunen": [
-    2,
-    8
-   ],
-   "gizli": [
-    4,
-    11
-   ],
-   "degisen_satir": 0
-  },
-  "sure": {
-   "1-turkce-metin": null,
-   "2-mayin-tarlasi": null,
-   "3-hata-avi": null
-  }
  }
 }

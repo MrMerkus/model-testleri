@@ -1,8 +1,8 @@
-# Model Testleri — 6 yapay zekâ, 3 görev, gizli testler
+# Model Testleri — 5 yapay zekâ, 3 görev, gizli testler
 
 **Site:** https://mrmerkus.github.io/model-testleri/ (sonuç tablosu, oynanabilir mayın tarlaları)
 
-28 Eylül 2026'da, Claude Sonnet 5.5'in çıktığı gün, altı model aynı üç görevi kendi komut
+28 Eylül 2026'da, Claude Sonnet 5.5'in çıktığı gün, beş model aynı üç görevi kendi komut
 satırı ajanında baştan sona yaptı. Puanı modelin kendi raporu değil, çalışma sırasında
 modelin göremediği testler verdi.
 
@@ -11,7 +11,6 @@ modelin göremediği testler verdi.
 | Claude Sonnet 5.5 | Claude Code |
 | Claude Opus 4.6, Claude Sonnet 4.6 | Antigravity |
 | Gemini 3.8 Flash, Gemini 3.1 Pro | Antigravity |
-| Space Bunny (OpenRouter stealth) | omp |
 
 ## Görevler
 
@@ -31,5 +30,4 @@ python3 hakem/puanla.py .        # _puanlar.json + Markdown tablo
 python3 site-uret.py             # index.html
 ```
 
-`calistir.sh` yerel kurulumu varsayar (agy, omp, claude CLI'ları; Space Bunny `bwrap`
-içinde yalıtılır). Süreler duvar saatidir ve model + ajan ikilisinin hızını ölçer.
+`calistir.sh` yerel kurulumu varsayar (agy, omp, claude CLI'ları). Süreler duvar saatidir ve model + ajan ikilisinin hızını ölçer.
