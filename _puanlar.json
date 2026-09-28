@@ -1,0 +1,353 @@
+{
+ "sonnet-5.5": {
+  "1": {
+   "gizli": [
+    43,
+    43
+   ],
+   "kendi_testi": [
+    36,
+    36
+   ]
+  },
+  "2": {
+   "kontroller": {
+    "81_hucre": true,
+    "once_null": true,
+    "on_mayin": true,
+    "ilk_tik_guvenli": true,
+    "zincirleme_acilma": true,
+    "sayilar_dogru": true,
+    "bayrak_koy": true,
+    "bayrakli_acilmaz": true,
+    "bayrak_kaldir": true,
+    "kazandin": true,
+    "bitince_donar": true,
+    "yeni_oyun": true,
+    "kaybettin": true,
+    "kaybedince_donar": true,
+    "konsol_hatasi_yok": true,
+    "dis_kaynak_yok": true
+   },
+   "notlar": [],
+   "puan": "16/16"
+  },
+  "3": {
+   "test_dosyasi_ayni": true,
+   "gorunen": [
+    8,
+    8
+   ],
+   "gizli": [
+    11,
+    11
+   ],
+   "degisen_satir": 10
+  },
+  "sure": {
+   "1-turkce-metin": [
+    40,
+    0
+   ],
+   "2-mayin-tarlasi": [
+    82,
+    0
+   ],
+   "3-hata-avi": [
+    27,
+    0
+   ]
+  }
+ },
+ "opus-4.6": {
+  "1": {
+   "gizli": [
+    43,
+    43
+   ],
+   "kendi_testi": [
+    44,
+    44
+   ]
+  },
+  "2": {
+   "kontroller": {
+    "81_hucre": true,
+    "once_null": true,
+    "on_mayin": true,
+    "ilk_tik_guvenli": true,
+    "zincirleme_acilma": true,
+    "sayilar_dogru": true,
+    "bayrak_koy": true,
+    "bayrakli_acilmaz": true,
+    "bayrak_kaldir": true,
+    "kazandin": true,
+    "bitince_donar": true,
+    "yeni_oyun": true,
+    "kaybettin": true,
+    "kaybedince_donar": true,
+    "konsol_hatasi_yok": true,
+    "dis_kaynak_yok": true
+   },
+   "notlar": [],
+   "puan": "16/16"
+  },
+  "3": {
+   "test_dosyasi_ayni": true,
+   "gorunen": [
+    8,
+    8
+   ],
+   "gizli": [
+    11,
+    11
+   ],
+   "degisen_satir": 10
+  },
+  "sure": {
+   "1-turkce-metin": [
+    108,
+    0
+   ],
+   "2-mayin-tarlasi": [
+    180,
+    0
+   ],
+   "3-hata-avi": [
+    115,
+    0
+   ]
+  }
+ },
+ "sonnet-4.6": {
+  "1": {
+   "gizli": [
+    43,
+    43
+   ],
+   "kendi_testi": [
+    45,
+    45
+   ]
+  },
+  "2": {
+   "kontroller": {
+    "81_hucre": true,
+    "once_null": true,
+    "on_mayin": true,
+    "ilk_tik_guvenli": true,
+    "zincirleme_acilma": true,
+    "sayilar_dogru": true,
+    "bayrak_koy": true,
+    "bayrakli_acilmaz": true,
+    "bayrak_kaldir": true,
+    "kazandin": true,
+    "bitince_donar": true,
+    "yeni_oyun": true,
+    "kaybettin": true,
+    "kaybedince_donar": true,
+    "konsol_hatasi_yok": true,
+    "dis_kaynak_yok": true
+   },
+   "notlar": [],
+   "puan": "16/16"
+  },
+  "3": {
+   "test_dosyasi_ayni": true,
+   "gorunen": [
+    8,
+    8
+   ],
+   "gizli": [
+    11,
+    11
+   ],
+   "degisen_satir": 10
+  },
+  "sure": {
+   "1-turkce-metin": [
+    110,
+    0
+   ],
+   "2-mayin-tarlasi": [
+    243,
+    0
+   ],
+   "3-hata-avi": [
+    101,
+    0
+   ]
+  }
+ },
+ "gemini-3.8-flash": {
+  "1": {
+   "gizli": [
+    43,
+    43
+   ],
+   "kendi_testi": [
+    26,
+    26
+   ]
+  },
+  "2": {
+   "kontroller": {
+    "81_hucre": true,
+    "once_null": true,
+    "on_mayin": true,
+    "ilk_tik_guvenli": true,
+    "zincirleme_acilma": true,
+    "sayilar_dogru": true,
+    "bayrak_koy": true,
+    "bayrakli_acilmaz": true,
+    "bayrak_kaldir": true,
+    "kazandin": true,
+    "bitince_donar": true,
+    "yeni_oyun": true,
+    "kaybettin": true,
+    "kaybedince_donar": true,
+    "konsol_hatasi_yok": true,
+    "dis_kaynak_yok": true
+   },
+   "notlar": [],
+   "puan": "16/16"
+  },
+  "3": {
+   "test_dosyasi_ayni": true,
+   "gorunen": [
+    8,
+    8
+   ],
+   "gizli": [
+    11,
+    11
+   ],
+   "degisen_satir": 10
+  },
+  "sure": {
+   "1-turkce-metin": [
+    159,
+    0
+   ],
+   "2-mayin-tarlasi": [
+    445,
+    0
+   ],
+   "3-hata-avi": [
+    151,
+    0
+   ]
+  }
+ },
+ "gemini-3.1-pro": {
+  "1": {
+   "gizli": [
+    43,
+    43
+   ],
+   "kendi_testi": [
+    4,
+    4
+   ]
+  },
+  "2": {
+   "kontroller": {
+    "81_hucre": true,
+    "once_null": true,
+    "on_mayin": true,
+    "ilk_tik_guvenli": true,
+    "zincirleme_acilma": true,
+    "sayilar_dogru": true,
+    "bayrak_koy": true,
+    "bayrakli_acilmaz": true,
+    "bayrak_kaldir": true,
+    "kazandin": true,
+    "bitince_donar": true,
+    "yeni_oyun": true,
+    "kaybettin": true,
+    "kaybedince_donar": true,
+    "konsol_hatasi_yok": true,
+    "dis_kaynak_yok": true
+   },
+   "notlar": [],
+   "puan": "16/16"
+  },
+  "3": {
+   "test_dosyasi_ayni": true,
+   "gorunen": [
+    8,
+    8
+   ],
+   "gizli": [
+    11,
+    11
+   ],
+   "degisen_satir": 10
+  },
+  "sure": {
+   "1-turkce-metin": [
+    90,
+    0
+   ],
+   "2-mayin-tarlasi": [
+    97,
+    0
+   ],
+   "3-hata-avi": [
+    73,
+    0
+   ]
+  }
+ },
+ "space-bunny": {
+  "1": {
+   "gizli": [
+    0,
+    1
+   ],
+   "kendi_testi": [
+    0,
+    1
+   ]
+  },
+  "2": {
+   "kontroller": {
+    "81_hucre": true,
+    "once_null": true,
+    "on_mayin": true,
+    "ilk_tik_guvenli": true,
+    "zincirleme_acilma": true,
+    "sayilar_dogru": true,
+    "bayrak_koy": true,
+    "bayrakli_acilmaz": true,
+    "bayrak_kaldir": true,
+    "kazandin": true,
+    "bitince_donar": true,
+    "yeni_oyun": true,
+    "kaybettin": true,
+    "kaybedince_donar": true,
+    "konsol_hatasi_yok": true,
+    "dis_kaynak_yok": true
+   },
+   "notlar": [],
+   "puan": "16/16"
+  },
+  "3": {
+   "test_dosyasi_ayni": true,
+   "gorunen": [
+    2,
+    8
+   ],
+   "gizli": [
+    4,
+    11
+   ],
+   "degisen_satir": 0
+  },
+  "sure": {
+   "1-turkce-metin": null,
+   "2-mayin-tarlasi": null,
+   "3-hata-avi": null
+  }
+ }
+}

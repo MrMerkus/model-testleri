@@ -1,0 +1,8 @@
+Görev bitti. `tr_metin.py` dört fonksiyonla yazıldı, `test_tr_metin.py` içindeki 36 testin hepsi geçti (`python3 -m pytest -q`).
+
+Belirsiz kalan yerlerde seçtiğim yolları `RAPOR.md` içine yazdım. Başlıcaları:
+- **`buyuk`/`kucuk`:** `i/ı` ve `İ/I` elle eşleniyor, kalanı Python'un normal çevirisine bırakılıyor. Böylece `İ` küçültülürken çıkan birleşik nokta işareti oluşmuyor.
+- **`slug`:** `ç ğ ı ö ş ü` dışındaki ASCII olmayan harfler (örneğin `é`) ayırıcı sayılıp `-` oluyor, çünkü EMIR bunlar için bir dönüşüm tanımlamıyor.
+- **`sayi_yaziya`:** "bir" yalnızca `bin` öncesinde tam 1 olduğunda düşüyor: `1000` → `bin`, `1_001_000` → `bir milyon bin`.
+
+Emin olmadığım başka bir yer yok.

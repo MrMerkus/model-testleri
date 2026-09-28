@@ -1,0 +1,9 @@
+Görevi anladım. Şimdi `tr_metin.py` modülünü, `test_tr_metin.py` test dosyasını ve `RAPOR.md` raporunu oluşturacağım. Hemen başlıyorum.
+44 test geçti, hiç hata yok. Şimdi `RAPOR.md` dosyasını yazıyorum.
+Görev tamamlandı. Özet:
+
+| Dosya | Durum |
+|-------|-------|
+| [tr_metin.py](opus-4.6/1-turkce-metin/tr_metin.py) | ✅ 4 fonksiyon (`buyuk`, `kucuk`, `slug`, `sayi_yaziya`) yazıldı |
+| [test_tr_metin.py](opus-4.6/1-turkce-metin/test_tr_metin.py) | ✅ 44 test, hepsi geçti |
+| [RAPOR.md](opus-4.6/1-turkce-metin/RAPOR.md) | ✅ Rapor yazıldı |

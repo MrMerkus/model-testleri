@@ -1,0 +1,7 @@
+Mayın tarlası hazır: `index.html` tek dosya, dış kaynaksız ve EMIR.md'deki test sözleşmesinin hepsine uyuyor. Kendi yazdığım 7 Playwright testi (`python3 -m pytest`) geçti. Bunlar ilk tıklama güvenliği, sayılar ve zincirleme açma, bayrak, kayıp, kazanç ve sıfırlamayı kapsıyor. Ekran görüntüsüne de baktım, görünüm düzgün. Yalnız Chromium'da denedim.
+
+Belirsiz yerlerde şunları seçtim, hepsi `RAPOR.md`'de yazılı:
+- **Kayıpta mayınlar:** görünen mayınlar `mayin` sınıfı alıyor, `acik` almıyor; yanlış bayraklar `yanlis` sınıfı alıyor.
+- **Kazanınca bayrak:** kalan mayınlara otomatik `bayrak` sınıfı konuyor. Sözleşmede yazmıyor, klasik davranışı seçtim. Otomatik testler bayraklı hücre sayısına bakıyorsa bu çakışabilir.
+
+`RAPOR.md` yanında `test_mayin.py` ve `ekran.png` de klasörde kaldı, teslim için gerekmiyor, silinebilir.

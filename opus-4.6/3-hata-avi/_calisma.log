@@ -1,0 +1,27 @@
+Şimdi önce testleri çalıştırıp hangi testlerin kırmızı olduğunu görelim, sonra hataları analiz edip düzeltelim.
+6 test başarısız. Hataları analiz ediyorum:
+
+**Hata 1** — `kitap_ekle` (satır 20): Aynı ISBN tekrar eklendiğinde adet `+=` yerine `=` ile set ediliyor. 2+3=5 olmalı ama 3 çıkıyor.
+
+**Hata 2** — `musait` (satır 33): İade edilen kitaplar da ödünç sayılıyor çünkü `o["iade"] is None` filtresi yok. Sadece aktif ödünçleri saymalı.
+
+**Hata 3** — `odunc_ver` (satır 44): `>` yerine `>=` olmalı. 3 kitap varsa limit dolmuş demek (MAKS_ODUNC = 3).
+
+**Hata 4** — `son_tarih` (satır 49): `ODUNC_GUN - 1` yerine `ODUNC_GUN` olmalı. 1 Ocak + 14 gün = 15 Ocak (son gün).
+
+**Hata 5** — `populer` (satır 67): Sıralama çoktan aza olmalı, yani `-x[1]` gerekli (descending). Eşitlikte ada göre A-Z.
+
+5 hata, 6 testi etkiliyor. Şimdi düzeltelim:
+Tüm düzeltmeler yapıldı. Testleri çalıştıralım:
+Tüm 8 test yeşil. Şimdi RAPOR.md dosyasını oluşturuyorum:
+Görev tamamlandı. Özet:
+
+| # | Hata | Düzeltme |
+|---|------|----------|
+| 1 | `kitap_ekle` — adet üzerine yazılıyor (`=`) | `+= adet` |
+| 2 | `musait` — iade edilenler de ödünçte sayılıyor | `and o["iade"] is None` filtresi eklendi |
+| 3 | `odunc_ver` — limit kontrolü off-by-one (`>`) | `>=` olarak değiştirildi |
+| 4 | `son_tarih` — son gün 1 gün erken (`ODUNC_GUN - 1`) | `ODUNC_GUN` yapıldı |
+| 5 | `populer` — sıralama azdan çoğa | `-x[1]` ile çoktan aza çevrildi |
+
+**Sonuç:** 8/8 test yeşil ✅. Detaylar [RAPOR.md](opus-4.6/3-hata-avi/RAPOR.md) dosyasında.

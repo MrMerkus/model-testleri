@@ -1,0 +1,9 @@
+Görevleri tamamladım. 
+
+Talebiniz doğrultusunda `EMIR.md` içerisindeki yönergelere göre istenilen Mayın Tarlası oyununu tek bir [index.html](gemini-3.1-pro/2-mayin-tarlasi/index.html) dosyası içerisinde kodladım:
+- Dış kaynak kullanılmadan, HTML/CSS ve JavaScript aynı dosyanın içinde yazıldı.
+- 9x9 ızgara, ilk tıklanan alan ve komşularının mayınsız olma kuralı sağlandı.
+- Test edilebilirlik sözleşmesindeki `data-r`, `data-c` özellikleri, `acik`/`bayrak` class'ları, `id="durum"` (Kazandın/Kaybettin), `id="yeni"` butonu gereklilikleri ve `window.mayinKonumlari()` global fonksiyonu harfiyen uygulandı.
+- Renkler, emoji (🚩, 💣) ve CSS gölgelendirmeleri ile düzgün ve anlaşılır bir tasarım oluşturuldu.
+
+Ne yaptığımı, test sürecini (`python3 -m pytest` ile bu klasörde mevcut önceden yazılmış testleri çalıştırıp denedim ancak test dosyası olmadığı için test koşulmadı) ve detayları anlattığım [RAPOR.md](gemini-3.1-pro/2-mayin-tarlasi/RAPOR.md) dosyasını da bu klasör içerisine oluşturdum. Oyun test edilmeye hazırdır. Başka bir isteğiniz varsa belirtebilirsiniz.

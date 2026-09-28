@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mayın Tarlası</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #1a1a2e;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #e0e0e0;
+    user-select: none;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 0.3rem;
+    letter-spacing: 2px;
+    color: #e94560;
+    text-shadow: 0 0 20px rgba(233,69,96,0.4);
+  }
+
+  #durum {
+    font-size: 1.2rem;
+    min-height: 1.8rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: #0f3460;
+    background: #e0e0e0;
+    padding: 0.2rem 1.2rem;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  #durum.kazandim { background: #4ecca3; color: #1a1a2e; }
+  #durum.kaybettim { background: #e94560; color: #fff; }
+
+  #bilgi {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 0.6rem;
+    font-size: 1rem;
+  }
+
+  #bilgi span { font-weight: 600; }
+
+  #tahta {
+    display: grid;
+    grid-template-columns: repeat(9, 42px);
+    grid-template-rows: repeat(9, 42px);
+    gap: 2px;
+    background: #16213e;
+    border: 3px solid #0f3460;
+    border-radius: 8px;
+    padding: 4px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .hucre {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #0f3460;
+    border: 2px solid #16213e;
+    transition: background 0.1s, transform 0.08s;
+    position: relative;
+  }
+
+  .hucre:hover:not(.acik) {
+    background: #1a4a8a;
+    transform: scale(1.05);
+    z-index: 1;
+  }
+
+  .hucre.acik {
+    background: #e0e0e0;
+    color: #1a1a2e;
+    cursor: default;
+    border-color: #ccc;
+  }
+
+  .hucre.bayrak {
+    background: #533483;
+    border-color: #7b2d8e;
+  }
+
+  .hucre.bayrak::after {
+    content: '🚩';
+    font-size: 1.2rem;
+  }
+
+  .hucre.mayin-goster {
+    background: #e94560;
+    border-color: #c0392b;
+  }
+
+  .hucre.mayin-goster::after {
+    content: '💣';
+    font-size: 1.2rem;
+  }
+
+  /* Sayı renkleri */
+  .hucre.s1 { color: #2980b9; }
+  .hucre.s2 { color: #27ae60; }
+  .hucre.s3 { color: #e94560; }
+  .hucre.s4 { color: #8e44ad; }
+  .hucre.s5 { color: #c0392b; }
+  .hucre.s6 { color: #16a085; }
+  .hucre.s7 { color: #2c3e50; }
+  .hucre.s8 { color: #7f8c8d; }
+
+  button#yeni {
+    margin-top: 1rem;
+    padding: 0.6rem 2rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a1a2e;
+    background: #4ecca3;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  button#yeni:hover {
+    background: #3ab58a;
+    transform: scale(1.05);
+  }
+
+  button#yeni:active {
+    transform: scale(0.97);
+  }
+</style>
+</head>
+<body>
+
+<h1>💣 Mayın Tarlası</h1>
+<div id="durum">&nbsp;</div>
+<div id="bilgi">
+  <span>🚩 Bayrak: <span id="bayrakSayac">0</span>/10</span>
+  <span>⏱ Süre: <span id="sure">0</span>s</span>
+</div>
+<div id="tahta"></div>
+<button id="yeni">Yeni Oyun</button>
+
+<script>
+(function () {
+  const SATIR = 9;
+  const SUTUN = 9;
+  const MAYIN_SAYISI = 10;
+
+  let tahta;          // 2D: { mayin, acik, bayrak, komsuMayin }
+  let mayinlar;       // [[r,c], ...] veya null
+  let ilkTikYapildi;
+  let oyunBitti;
+  let kalanKapali;
+  let bayrakSayisi;
+  let sureInterval;
+  let sureSaniye;
+
+  const tahtaDiv = document.getElementById('tahta');
+  const durumDiv = document.getElementById('durum');
+  const yeniBtn  = document.getElementById('yeni');
+  const bayrakSpan = document.getElementById('bayrakSayac');
+  const sureSpan = document.getElementById('sure');
+
+  // --- Dışa açılan API ---
+  window.mayinKonumlari = function () {
+    return mayinlar;
+  };
+
+  // --- Yardımcılar ---
+  function komsular(r, c) {
+    const sonuc = [];
+    for (let dr = -1; dr <= 1; dr++) {
+      for (let dc = -1; dc <= 1; dc++) {
+        if (dr === 0 && dc === 0) continue;
+        const nr = r + dr, nc = c + dc;
+        if (nr >= 0 && nr < SATIR && nc >= 0 && nc < SUTUN) {
+          sonuc.push([nr, nc]);
+        }
+      }
+    }
+    return sonuc;
+  }
+
+  function hucreEl(r, c) {
+    return tahtaDiv.querySelector(`[data-r="${r}"][data-c="${c}"]`);
+  }
+
+  // --- Mayın yerleştirme (ilk tık sonrası) ---
+  function mayinYerlestir(tikR, tikC) {
+    // İlk tıklanan + 8 komşusu güvenli
+    const guvenli = new Set();
+    guvenli.add(`${tikR},${tikC}`);
+    komsular(tikR, tikC).forEach(([r, c]) => guvenli.add(`${r},${c}`));
+
+    const adaylar = [];
+    for (let r = 0; r < SATIR; r++) {
+      for (let c = 0; c < SUTUN; c++) {
+        if (!guvenli.has(`${r},${c}`)) adaylar.push([r, c]);
+      }
+    }
+
+    // Fisher-Yates ile karıştır
+    for (let i = adaylar.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [adaylar[i], adaylar[j]] = [adaylar[j], adaylar[i]];
+    }
+
+    mayinlar = adaylar.slice(0, MAYIN_SAYISI);
+    mayinlar.forEach(([r, c]) => { tahta[r][c].mayin = true; });
+
+    // Komşu mayın sayıları
+    for (let r = 0; r < SATIR; r++) {
+      for (let c = 0; c < SUTUN; c++) {
+        if (tahta[r][c].mayin) continue;
+        let say = 0;
+        komsular(r, c).forEach(([nr, nc]) => {
+          if (tahta[nr][nc].mayin) say++;
+        });
+        tahta[r][c].komsuMayin = say;
+      }
+    }
+  }
+
+  // --- Hücre açma ---
+  function hucreAc(r, c) {
+    const h = tahta[r][c];
+    if (h.acik || h.bayrak || oyunBitti) return;
+
+    h.acik = true;
+    kalanKapali--;
+    const el = hucreEl(r, c);
+    el.classList.add('acik');
+
+    if (h.mayin) {
+      // Kaybettin
+      oyunBitti = true;
+      durumDiv.textContent = 'Kaybettin';
+      durumDiv.classList.add('kaybettim');
+      clearInterval(sureInterval);
+      // Bütün mayınları göster
+      mayinlar.forEach(([mr, mc]) => {
+        const mel = hucreEl(mr, mc);
+        if (!mel.classList.contains('bayrak')) {
+          mel.classList.add('mayin-goster');
+        }
+      });
+      return;
+    }
+
+    if (h.komsuMayin > 0) {
+      el.textContent = h.komsuMayin;
+      el.classList.add('s' + h.komsuMayin);
+    } else {
+      el.textContent = '';
+      // Zincirleme aç
+      komsular(r, c).forEach(([nr, nc]) => hucreAc(nr, nc));
+    }
+
+    // Kazanma kontrolü
+    if (kalanKapali === MAYIN_SAYISI) {
+      oyunBitti = true;
+      durumDiv.textContent = 'Kazandın';
+      durumDiv.classList.add('kazandim');
+      clearInterval(sureInterval);
+    }
+  }
+
+  // --- Süre ---
+  function sureBaslat() {
+    sureSaniye = 0;
+    sureSpan.textContent = '0';
+    sureInterval = setInterval(() => {
+      sureSaniye++;
+      sureSpan.textContent = sureSaniye;
+    }, 1000);
+  }
+
+  // --- Oyunu oluştur ---
+  function oyunOlustur() {
+    clearInterval(sureInterval);
+
+    tahta = [];
+    for (let r = 0; r < SATIR; r++) {
+      tahta[r] = [];
+      for (let c = 0; c < SUTUN; c++) {
+        tahta[r][c] = { mayin: false, acik: false, bayrak: false, komsuMayin: 0 };
+      }
+    }
+
+    mayinlar = null;
+    ilkTikYapildi = false;
+    oyunBitti = false;
+    kalanKapali = SATIR * SUTUN;
+    bayrakSayisi = 0;
+    sureSaniye = 0;
+
+    durumDiv.textContent = '\u00A0';
+    durumDiv.classList.remove('kazandim', 'kaybettim');
+    bayrakSpan.textContent = '0';
+    sureSpan.textContent = '0';
+
+    tahtaDiv.innerHTML = '';
+    for (let r = 0; r < SATIR; r++) {
+      for (let c = 0; c < SUTUN; c++) {
+        const el = document.createElement('div');
+        el.className = 'hucre';
+        el.setAttribute('data-r', r);
+        el.setAttribute('data-c', c);
+
+        el.addEventListener('click', () => solTik(r, c));
+        el.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          sagTik(r, c);
+        });
+
+        tahtaDiv.appendChild(el);
+      }
+    }
+  }
+
+  function solTik(r, c) {
+    if (oyunBitti) return;
+    if (tahta[r][c].bayrak) return;
+    if (tahta[r][c].acik) return;
+
+    if (!ilkTikYapildi) {
+      ilkTikYapildi = true;
+      mayinYerlestir(r, c);
+      sureBaslat();
+    }
+
+    hucreAc(r, c);
+  }
+
+  function sagTik(r, c) {
+    if (oyunBitti) return;
+    if (tahta[r][c].acik) return;
+
+    const h = tahta[r][c];
+    const el = hucreEl(r, c);
+
+    if (h.bayrak) {
+      h.bayrak = false;
+      el.classList.remove('bayrak');
+      bayrakSayisi--;
+    } else {
+      h.bayrak = true;
+      el.classList.add('bayrak');
+      bayrakSayisi++;
+    }
+    bayrakSpan.textContent = bayrakSayisi;
+  }
+
+  yeniBtn.addEventListener('click', oyunOlustur);
+
+  // İlk yükleme
+  oyunOlustur();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+Görevi anladım. Tek bir `index.html` dosyasında mayın tarlası oyunu + Playwright/pytest testleri + rapor oluşturacağım. Hemen başlıyorum.
+Şimdi testleri yazacağım. Önce projede pytest ve playwright yüklü mü kontrol edip testleri oluşturayım.
+Testleri bu arada hazırlayacağım.
+Playwright kuruldu. Şimdi tarayıcıları yükleyelim ve testleri çalıştıralım.
+Şimdi testleri çalıştıralım:
+18/18 test geçti. Şimdi RAPOR.md yazıyorum.
+Görev tamamlandı. İşte özet:
+
+## ✅ Tamamlanan işler
+
+| Dosya | Açıklama |
+|-------|----------|
+| [index.html](opus-4.6/2-mayin-tarlasi/index.html) | Tek dosyada tam çalışan mayın tarlası (CSS+JS inline, dış kaynak yok) |
+| [test_mayin.py](opus-4.6/2-mayin-tarlasi/test_mayin.py) | 18 Playwright testi — tümü geçti |
+| [RAPOR.md](opus-4.6/2-mayin-tarlasi/RAPOR.md) | Ne yaptım, nasıl denedim, kararlar |
+
+**Test sonucu: 18/18 passed** ✅ — Izgara yapısı, ilk tık güvenliği, zincirleme açma, bayrak, kazanma, kaybetme, yeni oyun, API formatı — hepsi doğrulandı.

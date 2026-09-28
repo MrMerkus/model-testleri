@@ -1,0 +1,8 @@
+Görevleri `EMIR.md` dosyasındaki yönergelere göre tamamladım. 
+
+Bulunduğumuz klasörde aşağıdaki dosyaları oluşturdum:
+1. **[tr_metin.py](gemini-3.1-pro/1-turkce-metin/tr_metin.py)**: İstenilen 4 farklı string/sayı işleme fonksiyonu (büyük, küçük, slug, sayi_yaziya) sadece standart kütüphaneler kullanılarak implemente edildi.
+2. **[test_tr_metin.py](gemini-3.1-pro/1-turkce-metin/test_tr_metin.py)**: Python ve pytest kullanarak uç noktaları test eden (bool denemeleri, negatif sayılar ve boşluksuz/boşluklu Türkçe slug stringleri dahil) senaryolar yazıldı.
+3. **[RAPOR.md](gemini-3.1-pro/1-turkce-metin/RAPOR.md)**: Uygulama detayı, varsayımlar ve belirsizlikleri nasıl ele aldığım hakkında detaylı özet oluşturuldu.
+
+Testler `python3 -m pytest test_tr_metin.py` komutuyla çalıştırıldı ve tamamı başarıyla (4 passed) geçti. İlgili dosyaları yukarıdaki bağlantılara tıklayarak inceleyebilirsiniz. Başka bir işlem beklemeden görevi burada sonlandırıyorum.

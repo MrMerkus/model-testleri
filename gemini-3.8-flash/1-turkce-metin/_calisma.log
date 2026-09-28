@@ -1,0 +1,17 @@
+[EMIR.md](gemini-3.8-flash/1-turkce-metin/EMIR.md) dosyasındaki tüm gereksinimler eksiksiz olarak tamamlanmıştır.
+
+### Yapılan İşler
+
+1. **[`tr_metin.py`](gemini-3.8-flash/1-turkce-metin/tr_metin.py)**:
+   - Sadece Python 3 standart kütüphanesi kullanılarak yazıldı.
+   - **`buyuk(metin: str) -> str`**: `i ↔ İ` ve `ı ↔ I` dönüşümlerini Türkçe kurallarına uygun olarak gerçekleştirir, diğer karakterlerde standart büyük harf dönüşümünü korur.
+   - **`kucuk(metin: str) -> str`**: `İ ↔ i` ve `I ↔ ı` dönüşümlerini sağlar (`str.lower()` kaynaklı `'İ'` karakterinin iki baytlık `'i\u0307'` ayrık aksanına dönüşmesi önlenmiştir).
+   - **`slug(metin: str) -> str`**: Şartnamedeki 4 adımı birebir uygulayarak URL uyumlu slug üretir; harf/rakam kalmadığında boş dize döner.
+   - **`sayi_yaziya(n: int) -> str`**: `0` için `"sıfır"`, negatifler için `"eksi "`, `100` için `"yüz"`, `1000` için `"bin"`, `1_000_000` için `"bir milyon"` gibi kuralları eksiksiz uygular. `|n| >= 10**15` değerlerinde `ValueError`, `bool` ve `float` dahil `int` dışı tiplerde `TypeError` fırlatır.
+
+2. **[`test_tr_metin.py`](gemini-3.8-flash/1-turkce-metin/test_tr_metin.py)**:
+   - Tüm fonksiyonlar, sınır değerler, negatif sayılar ve tip/değer hataları için pytest ile 26 birim test yazıldı.
+   - `python3 -m pytest` çalıştırıldı: 26 testin 26'sı da başarıyla geçti.
+
+3. **[`RAPOR.md`](gemini-3.8-flash/1-turkce-metin/RAPOR.md)**:
+   - Yapılan işlemler, test sonuçları ve uygulanan makul tercihler özetlendi.

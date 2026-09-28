@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mayın Tarlası</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --cell-unopened: #334155;
+      --cell-unopened-hover: #3b4960;
+      --cell-opened: #090d16;
+      --cell-border: #475569;
+      --shadow-color: rgba(0, 0, 0, 0.45);
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .oyun-kart {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 20px 40px var(--shadow-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .oyun-baslik {
+      text-align: center;
+      width: 100%;
+    }
+
+    .oyun-baslik h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #38bdf8;
+      margin-bottom: 2px;
+    }
+
+    .oyun-baslik .alt-baslik {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .kontrol-paneli {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 16px;
+    }
+
+    .sayac-kutu {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #020617;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #1e293b;
+      min-width: 82px;
+      justify-content: center;
+    }
+
+    .sayac-ikon {
+      font-size: 16px;
+    }
+
+    .sayac-deger {
+      font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+      font-size: 20px;
+      font-weight: 700;
+      color: #f43f5e;
+      letter-spacing: 1px;
+    }
+
+    #sayac-sure {
+      color: #38bdf8;
+    }
+
+    .yeni-buton {
+      background: #334155;
+      border: 2px solid #475569;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+      color: #ffffff;
+      outline: none;
+    }
+
+    .yeni-buton:hover {
+      background: #475569;
+      transform: translateY(-1px);
+    }
+
+    .yeni-buton:active {
+      transform: translateY(1px);
+    }
+
+    .durum-paneli {
+      width: 100%;
+      text-align: center;
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #durum {
+      font-size: 14px;
+      font-weight: 600;
+      color: #cbd5e1;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.7);
+      width: 100%;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    #durum.kazandi {
+      background: rgba(22, 101, 52, 0.35);
+      color: #4ade80;
+      border-color: #16a34a;
+    }
+
+    #durum.kaybetti {
+      background: rgba(153, 27, 27, 0.35);
+      color: #f87171;
+      border-color: #dc2626;
+    }
+
+    .tahta-alani {
+      background: #090d16;
+      border: 2px solid #1e293b;
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .tahta {
+      display: grid;
+      grid-template-columns: repeat(9, 40px);
+      grid-template-rows: repeat(9, 40px);
+      gap: 4px;
+    }
+
+    .hucre {
+      width: 40px;
+      height: 40px;
+      background: var(--cell-unopened);
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font-family);
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #1e293b;
+      transition: background 0.1s ease, transform 0.05s ease;
+      color: transparent;
+      line-height: 1;
+      outline: none;
+      padding: 0;
+    }
+
+    .hucre:hover:not(.acik) {
+      background: var(--cell-unopened-hover);
+    }
+
+    .hucre:active:not(.acik) {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #1e293b;
+    }
+
+    /* Açılmış hücre */
+    .hucre.acik {
+      background: #111c2e;
+      border: 1px solid #1e293b;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+      cursor: default;
+      transform: none;
+    }
+
+    /* Bayraklı hücre */
+    .hucre.bayrak {
+      background: #1e293b;
+      color: #f43f5e;
+      box-shadow: 0 3px 0 #0f172a;
+    }
+
+    /* Mayın hücresi */
+    .hucre.mayin {
+      background: #450a0a !important;
+      color: #fca5a5 !important;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+    }
+
+    /* Patlayan mayın hücresi */
+    .hucre.mayin.patladi {
+      background: #dc2626 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 12px #ef4444 !important;
+    }
+
+    /* Sayı renkleri */
+    .hucre.acik[data-sayi="1"] { color: #60a5fa; }
+    .hucre.acik[data-sayi="2"] { color: #4ade80; }
+    .hucre.acik[data-sayi="3"] { color: #f87171; }
+    .hucre.acik[data-sayi="4"] { color: #c084fc; }
+    .hucre.acik[data-sayi="5"] { color: #fb923c; }
+    .hucre.acik[data-sayi="6"] { color: #2dd4bf; }
+    .hucre.acik[data-sayi="7"] { color: #f472b6; }
+    .hucre.acik[data-sayi="8"] { color: #cbd5e1; }
+
+    .ipucu-paneli {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .ipucu-paneli span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <main class="oyun-kart">
+    <header class="oyun-baslik">
+      <h1>Mayın Tarlası</h1>
+      <div class="alt-baslik">9×9 • 10 Mayın</div>
+    </header>
+
+    <section class="kontrol-paneli">
+      <div class="sayac-kutu" title="Kalan Mayın Sayısı">
+        <span class="sayac-ikon">🚩</span>
+        <span id="sayac-mayin" class="sayac-deger">010</span>
+      </div>
+      <button id="yeni" class="yeni-buton" type="button" aria-label="Yeni Oyun" title="Yeni Oyun">🙂</button>
+      <div class="sayac-kutu" title="Geçen Süre (saniye)">
+        <span class="sayac-ikon">⏱️</span>
+        <span id="sayac-sure" class="sayac-deger">000</span>
+      </div>
+    </section>
+
+    <div class="durum-paneli">
+      <div id="durum">Oyuna başlamak için bir kareye tıklayın</div>
+    </div>
+
+    <section class="tahta-alani">
+      <div id="tahta" class="tahta" role="grid" aria-label="Mayın Tarlası Izgarası">
+        <button type="button" class="hucre" data-r="0" data-c="0"></button>
+        <button type="button" class="hucre" data-r="0" data-c="1"></button>
+        <button type="button" class="hucre" data-r="0" data-c="2"></button>
+        <button type="button" class="hucre" data-r="0" data-c="3"></button>
+        <button type="button" class="hucre" data-r="0" data-c="4"></button>
+        <button type="button" class="hucre" data-r="0" data-c="5"></button>
+        <button type="button" class="hucre" data-r="0" data-c="6"></button>
+        <button type="button" class="hucre" data-r="0" data-c="7"></button>
+        <button type="button" class="hucre" data-r="0" data-c="8"></button>
+
+        <button type="button" class="hucre" data-r="1" data-c="0"></button>
+        <button type="button" class="hucre" data-r="1" data-c="1"></button>
+        <button type="button" class="hucre" data-r="1" data-c="2"></button>
+        <button type="button" class="hucre" data-r="1" data-c="3"></button>
+        <button type="button" class="hucre" data-r="1" data-c="4"></button>
+        <button type="button" class="hucre" data-r="1" data-c="5"></button>
+        <button type="button" class="hucre" data-r="1" data-c="6"></button>
+        <button type="button" class="hucre" data-r="1" data-c="7"></button>
+        <button type="button" class="hucre" data-r="1" data-c="8"></button>
+
+        <button type="button" class="hucre" data-r="2" data-c="0"></button>
+        <button type="button" class="hucre" data-r="2" data-c="1"></button>
+        <button type="button" class="hucre" data-r="2" data-c="2"></button>
+        <button type="button" class="hucre" data-r="2" data-c="3"></button>
+        <button type="button" class="hucre" data-r="2" data-c="4"></button>
+        <button type="button" class="hucre" data-r="2" data-c="5"></button>
+        <button type="button" class="hucre" data-r="2" data-c="6"></button>
+        <button type="button" class="hucre" data-r="2" data-c="7"></button>
+        <button type="button" class="hucre" data-r="2" data-c="8"></button>
+
+        <button type="button" class="hucre" data-r="3" data-c="0"></button>
+        <button type="button" class="hucre" data-r="3" data-c="1"></button>
+        <button type="button" class="hucre" data-r="3" data-c="2"></button>
+        <button type="button" class="hucre" data-r="3" data-c="3"></button>
+        <button type="button" class="hucre" data-r="3" data-c="4"></button>
+        <button type="button" class="hucre" data-r="3" data-c="5"></button>
+        <button type="button" class="hucre" data-r="3" data-c="6"></button>
+        <button type="button" class="hucre" data-r="3" data-c="7"></button>
+        <button type="button" class="hucre" data-r="3" data-c="8"></button>
+
+        <button type="button" class="hucre" data-r="4" data-c="0"></button>
+        <button type="button" class="hucre" data-r="4" data-c="1"></button>
+        <button type="button" class="hucre" data-r="4" data-c="2"></button>
+        <button type="button" class="hucre" data-r="4" data-c="3"></button>
+        <button type="button" class="hucre" data-r="4" data-c="4"></button>
+        <button type="button" class="hucre" data-r="4" data-c="5"></button>
+        <button type="button" class="hucre" data-r="4" data-c="6"></button>
+        <button type="button" class="hucre" data-r="4" data-c="7"></button>
+        <button type="button" class="hucre" data-r="4" data-c="8"></button>
+
+        <button type="button" class="hucre" data-r="5" data-c="0"></button>
+        <button type="button" class="hucre" data-r="5" data-c="1"></button>
+        <button type="button" class="hucre" data-r="5" data-c="2"></button>
+        <button type="button" class="hucre" data-r="5" data-c="3"></button>
+        <button type="button" class="hucre" data-r="5" data-c="4"></button>
+        <button type="button" class="hucre" data-r="5" data-c="5"></button>
+        <button type="button" class="hucre" data-r="5" data-c="6"></button>
+        <button type="button" class="hucre" data-r="5" data-c="7"></button>
+        <button type="button" class="hucre" data-r="5" data-c="8"></button>
+
+        <button type="button" class="hucre" data-r="6" data-c="0"></button>
+        <button type="button" class="hucre" data-r="6" data-c="1"></button>
+        <button type="button" class="hucre" data-r="6" data-c="2"></button>
+        <button type="button" class="hucre" data-r="6" data-c="3"></button>
+        <button type="button" class="hucre" data-r="6" data-c="4"></button>
+        <button type="button" class="hucre" data-r="6" data-c="5"></button>
+        <button type="button" class="hucre" data-r="6" data-c="6"></button>
+        <button type="button" class="hucre" data-r="6" data-c="7"></button>
+        <button type="button" class="hucre" data-r="6" data-c="8"></button>
+
+        <button type="button" class="hucre" data-r="7" data-c="0"></button>
+        <button type="button" class="hucre" data-r="7" data-c="1"></button>
+        <button type="button" class="hucre" data-r="7" data-c="2"></button>
+        <button type="button" class="hucre" data-r="7" data-c="3"></button>
+        <button type="button" class="hucre" data-r="7" data-c="4"></button>
+        <button type="button" class="hucre" data-r="7" data-c="5"></button>
+        <button type="button" class="hucre" data-r="7" data-c="6"></button>
+        <button type="button" class="hucre" data-r="7" data-c="7"></button>
+        <button type="button" class="hucre" data-r="7" data-c="8"></button>
+
+        <button type="button" class="hucre" data-r="8" data-c="0"></button>
+        <button type="button" class="hucre" data-r="8" data-c="1"></button>
+        <button type="button" class="hucre" data-r="8" data-c="2"></button>
+        <button type="button" class="hucre" data-r="8" data-c="3"></button>
+        <button type="button" class="hucre" data-r="8" data-c="4"></button>
+        <button type="button" class="hucre" data-r="8" data-c="5"></button>
+        <button type="button" class="hucre" data-r="8" data-c="6"></button>
+        <button type="button" class="hucre" data-r="8" data-c="7"></button>
+        <button type="button" class="hucre" data-r="8" data-c="8"></button>
+      </div>
+    </section>
+
+    <footer class="ipucu-paneli">
+      <span>🖱️ Sol tık: Aç</span>
+      <span>🚩 Sağ tık: Bayrak</span>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      const SATIR_SAYISI = 9;
+      const SUTUN_SAYISI = 9;
+      const MAYIN_SAYISI = 10;
+      const TOPLAM_HIZMETSIZ_HUCRE = SATIR_SAYISI * SUTUN_SAYISI - MAYIN_SAYISI; // 71
+
+      let mayinlar = null; // [[r, c], ...]
+      const mayinSet = new Set();
+      const komsuMayinSayilari = Array.from({ length: SATIR_SAYISI }, () => Array(SUTUN_SAYISI).fill(0));
+
+      let ilkTiklama = false;
+      let oyunBitti = false;
+      let acilanHucreSayisi = 0;
+      let bayrakSayisi = 0;
+
+      let sureZamanlayici = null;
+      let gecenSaniye = 0;
+
+      // DOM Referansları
+      const durumEl = document.getElementById('durum');
+      const yeniBtn = document.getElementById('yeni');
+      const sayacMayinEl = document.getElementById('sayac-mayin');
+      const sayacSureEl = document.getElementById('sayac-sure');
+      const tahtaEl = document.getElementById('tahta');
+
+      // 9x9 ızgara elemanlarını matris halinde önbelleğe al
+      const hucreMatrisi = Array.from({ length: SATIR_SAYISI }, () => Array(SUTUN_SAYISI).fill(null));
+
+      function hucreleriOnbellegeAl() {
+        const hucreler = tahtaEl.querySelectorAll('.hucre');
+        hucreler.forEach((hucre) => {
+          const r = parseInt(hucre.getAttribute('data-r'), 10);
+          const c = parseInt(hucre.getAttribute('data-c'), 10);
+          hucreMatrisi[r][c] = hucre;
+        });
+      }
+      hucreleriOnbellegeAl();
+
+      function hucreAl(r, c) {
+        if (r < 0 || r >= SATIR_SAYISI || c < 0 || c >= SUTUN_SAYISI) return null;
+        return hucreMatrisi[r][c];
+      }
+
+      function sayaclariGuncelle() {
+        const kalan = MAYIN_SAYISI - bayrakSayisi;
+        const kalanStr = kalan < 0 ? String(kalan) : String(kalan).padStart(3, '0');
+        if (sayacMayinEl) sayacMayinEl.textContent = kalanStr;
+      }
+
+      function sayacBaslat() {
+        if (sureZamanlayici) return;
+        gecenSaniye = 0;
+        sayacSureEl.textContent = '000';
+        sureZamanlayici = setInterval(() => {
+          gecenSaniye++;
+          if (gecenSaniye > 999) gecenSaniye = 999;
+          sayacSureEl.textContent = String(gecenSaniye).padStart(3, '0');
+        }, 1000);
+      }
+
+      function sayacDurdur() {
+        if (sureZamanlayici) {
+          clearInterval(sureZamanlayici);
+          sureZamanlayici = null;
+        }
+      }
+
+      // Mayınları ilk tıklanan hücre ve 8 komşusu haricindeki alanlara yerleştir
+      function mayinlariYerlestir(ilkR, ilkC) {
+        const adaylar = [];
+        for (let r = 0; r < SATIR_SAYISI; r++) {
+          for (let c = 0; c < SUTUN_SAYISI; c++) {
+            // İlk tıklanan hücre ve 8 komşusu mayınsızdır
+            if (Math.abs(r - ilkR) > 1 || Math.abs(c - ilkC) > 1) {
+              adaylar.push([r, c]);
+            }
+          }
+        }
+
+        // Fisher-Yates karıştırma
+        for (let i = adaylar.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const gecici = adaylar[i];
+          adaylar[i] = adaylar[j];
+          adaylar[j] = gecici;
+        }
+
+        mayinlar = adaylar.slice(0, MAYIN_SAYISI);
+        mayinSet.clear();
+        for (const [r, c] of mayinlar) {
+          mayinSet.add(`${r},${c}`);
+        }
+
+        // Komşu mayın sayılarını hesapla
+        for (let r = 0; r < SATIR_SAYISI; r++) {
+          for (let c = 0; c < SUTUN_SAYISI; c++) {
+            komsuMayinSayilari[r][c] = 0;
+          }
+        }
+
+        for (const [mr, mc] of mayinlar) {
+          for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              if (dr === 0 && dc === 0) continue;
+              const nr = mr + dr;
+              const nc = mc + dc;
+              if (nr >= 0 && nr < SATIR_SAYISI && nc >= 0 && nc < SUTUN_SAYISI) {
+                komsuMayinSayilari[nr][nc]++;
+              }
+            }
+          }
+        }
+
+        ilkTiklama = true;
+        sayacBaslat();
+        if (durumEl) durumEl.textContent = 'Oyun devam ediyor...';
+      }
+
+      function hucreAc(baslangicR, baslangicC) {
+        if (oyunBitti) return;
+
+        const baslangicHucre = hucreAl(baslangicR, baslangicC);
+        if (!baslangicHucre) return;
+
+        // Bayraklı hücre sol tıkla açılmaz
+        if (baslangicHucre.classList.contains('bayrak')) return;
+        // Zaten açık hücre açılmaz
+        if (baslangicHucre.classList.contains('acik')) return;
+
+        // İlk tıklama ise mayınları yerleştir
+        if (!ilkTiklama) {
+          mayinlariYerlestir(baslangicR, baslangicC);
+        }
+
+        // Mayına tıklandı mı?
+        if (mayinSet.has(`${baslangicR},${baslangicC}`)) {
+          oyunuKaybet(baslangicR, baslangicC);
+          return;
+        }
+
+        // Güvenli hücre, BFS ile zincirleme açılış
+        const kuyruk = [[baslangicR, baslangicC]];
+        const kuyruktaVar = new Set([`${baslangicR},${baslangicC}`]);
+
+        while (kuyruk.length > 0) {
+          const [r, c] = kuyruk.shift();
+          const hucre = hucreAl(r, c);
+          if (!hucre) continue;
+          if (hucre.classList.contains('acik') || hucre.classList.contains('bayrak')) continue;
+
+          hucre.classList.add('acik');
+          acilanHucreSayisi++;
+
+          const sayi = komsuMayinSayilari[r][c];
+          if (sayi > 0) {
+            hucre.textContent = String(sayi);
+            hucre.setAttribute('data-sayi', String(sayi));
+          } else {
+            // Sayı 0 ise metin boştur ve komşular otomatik açılır
+            hucre.textContent = '';
+            for (let dr = -1; dr <= 1; dr++) {
+              for (let dc = -1; dc <= 1; dc++) {
+                if (dr === 0 && dc === 0) continue;
+                const nr = r + dr;
+                const nc = c + dc;
+                if (nr >= 0 && nr < SATIR_SAYISI && nc >= 0 && nc < SUTUN_SAYISI) {
+                  const anahtar = `${nr},${nc}`;
+                  const komsu = hucreAl(nr, nc);
+                  if (komsu && !komsu.classList.contains('acik') && !komsu.classList.contains('bayrak') && !kuyruktaVar.has(anahtar)) {
+                    kuyruktaVar.add(anahtar);
+                    kuyruk.push([nr, nc]);
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // Kazanma kontrolü: Mayın olmayan bütün hücreler açılınca oyun kazanılır
+        if (acilanHucreSayisi === TOPLAM_HIZMETSIZ_HUCRE) {
+          oyunuKazan();
+        }
+      }
+
+      function bayrakDegistir(r, c) {
+        if (oyunBitti) return;
+        const hucre = hucreAl(r, c);
+        if (!hucre || hucre.classList.contains('acik')) return;
+
+        if (hucre.classList.contains('bayrak')) {
+          hucre.classList.remove('bayrak');
+          hucre.textContent = '';
+          bayrakSayisi--;
+        } else {
+          hucre.classList.add('bayrak');
+          hucre.textContent = '🚩';
+          bayrakSayisi++;
+        }
+        sayaclariGuncelle();
+      }
+
+      function oyunuKaybet(patlayanR, patlayanC) {
+        oyunBitti = true;
+        sayacDurdur();
+
+        if (durumEl) {
+          durumEl.textContent = 'Mayına bastın! Kaybettin. 💥';
+          durumEl.className = 'kaybetti';
+        }
+        if (yeniBtn) yeniBtn.textContent = '😵';
+
+        // Bütün mayınları göster
+        if (mayinlar) {
+          for (const [mr, mc] of mayinlar) {
+            const hucre = hucreAl(mr, mc);
+            if (hucre) {
+              hucre.classList.add('mayin');
+              hucre.classList.add('acik');
+              hucre.classList.remove('bayrak');
+              hucre.textContent = '💣';
+              if (mr === patlayanR && mc === patlayanC) {
+                hucre.classList.add('patladi');
+              }
+            }
+          }
+        }
+      }
+
+      function oyunuKazan() {
+        oyunBitti = true;
+        sayacDurdur();
+
+        if (durumEl) {
+          durumEl.textContent = 'Tebrikler! Oyunu Kazandın! 🎉';
+          durumEl.className = 'kazandi';
+        }
+        if (yeniBtn) yeniBtn.textContent = '😎';
+        sayaclariGuncelle();
+      }
+
+      function oyunuSifirla() {
+        oyunBitti = false;
+        ilkTiklama = false;
+        mayinlar = null;
+        mayinSet.clear();
+        acilanHucreSayisi = 0;
+        bayrakSayisi = 0;
+
+        sayacDurdur();
+        gecenSaniye = 0;
+        if (sayacSureEl) sayacSureEl.textContent = '000';
+        sayaclariGuncelle();
+
+        if (durumEl) {
+          durumEl.textContent = 'Oyuna başlamak için bir kareye tıklayın';
+          durumEl.className = '';
+        }
+        if (yeniBtn) yeniBtn.textContent = '🙂';
+
+        for (let r = 0; r < SATIR_SAYISI; r++) {
+          for (let c = 0; c < SUTUN_SAYISI; c++) {
+            komsuMayinSayilari[r][c] = 0;
+            const hucre = hucreAl(r, c);
+            if (hucre) {
+              hucre.className = 'hucre';
+              hucre.removeAttribute('data-sayi');
+              hucre.textContent = '';
+            }
+          }
+        }
+      }
+
+      // Her hücreye doğrudan dinleyici ata
+      for (let r = 0; r < SATIR_SAYISI; r++) {
+        for (let c = 0; c < SUTUN_SAYISI; c++) {
+          const hucre = hucreAl(r, c);
+          if (!hucre) continue;
+
+          hucre.addEventListener('click', function (e) {
+            e.preventDefault();
+            const hr = parseInt(this.getAttribute('data-r'), 10);
+            const hc = parseInt(this.getAttribute('data-c'), 10);
+            hucreAc(hr, hc);
+          });
+
+          hucre.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            const hr = parseInt(this.getAttribute('data-r'), 10);
+            const hc = parseInt(this.getAttribute('data-c'), 10);
+            bayrakDegistir(hr, hc);
+          });
+        }
+      }
+
+      if (tahtaEl) {
+        tahtaEl.addEventListener('contextmenu', (e) => e.preventDefault());
+      }
+
+      if (yeniBtn) {
+        yeniBtn.addEventListener('click', oyunuSifirla);
+      }
+
+      // Global API Sözleşmesi
+      window.mayinKonumlari = function () {
+        if (!mayinlar) return null;
+        return mayinlar.map(([r, c]) => [r, c]);
+      };
+
+      // İlk durumu başlat
+      oyunuSifirla();
+    })();
+  </script>
+</body>
+</html>

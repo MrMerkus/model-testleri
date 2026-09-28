@@ -1,0 +1,12 @@
+Görev tamamlandı. `kutuphane.py` içindeki tüm hatalar düzeltildi ve testlerin başarıyla geçmesi (yeşil olması) sağlandı. Ayrıca, istenen detayları içeren `RAPOR.md` dosyası klasör içerisine oluşturuldu.
+
+Bulunan hatalar ve yapılan düzeltmeler özetle şöyleydi:
+1. `kitap_ekle` içinde önceden var olan kitabı eklerken adedin üzerine yazılması (`+=` yapılarak düzeltildi).
+2. `musait` içinde raftaki sayıyı bulurken iade edilmiş olanların da stoktan düşülmesi (`o["iade"] is None` kontrolü eklendi).
+3. `odunc_ver` içindeki limit kontrolünde `>` operatörü yüzünden limitten fazla kitap alınabilmesi (`>=` yapılarak düzeltildi).
+4. `son_tarih` içindeki gecikme ve bitiş günü hesaplamasında `- 1` gün eksiklik olması (`- 1` kaldırılarak hedef hesaplama tutturuldu).
+5. `populer` fonksiyonundaki sıralamanın azdan çoğa doğru yapılması (lambda key parametresi eksi değeri alacak şekilde değiştirilip çoktan aza düzeltildi).
+
+Aşağıdaki bağlantılardan düzenlenen kodlara ve oluşturulan rapora erişebilirsin:
+- [kutuphane.py](gemini-3.1-pro/3-hata-avi/kutuphane.py)
+- [RAPOR.md](gemini-3.1-pro/3-hata-avi/RAPOR.md)

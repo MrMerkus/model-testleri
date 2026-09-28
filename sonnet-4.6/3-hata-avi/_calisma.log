@@ -1,0 +1,30 @@
+Kodu analiz ettim. İki hata var:
+
+1. **`kitap_ekle`**: Aynı ISBN tekrar eklenince mevcut adete eklemek yerine üzerine yazıyor (`self.kitaplar[isbn]["adet"] = adet` → `+= adet` olmalı)
+2. **`odunc_ver`**: Limit kontrolü `>` yerine `>=` olmalı (3 kitapla limit dolu, 4. kitapta hata vermeli, ama şu an `> 3` = 4'ten büyükse hata veriyor)
+3. **`populer`**: Sıralama `key=lambda x: (x[1], x[0])` — artan sıralıyor, azalan olması için `(-x[1], x[0])` olmalı
+4. **`musait`**: İade edilmiş kitapları da stoktan düşürüyor — `o["iade"] is None` kontrolü eksik
+6 hata var. Tüm hataları net gördüm. Şimdi düzeltiyorum:
+
+**Hata 1** (satır 20): `kitap_ekle` — adet üzerine yazıyor, toplamalı  
+**Hata 2** (satır 33): `musait` — iade edilmiş kitapları da sayıyor, `iade is None` filtresi eksik  
+**Hata 3** (satır 44): `odunc_ver` — limit `>` yerine `>=` olmalı  
+**Hata 4** (satır 49): `son_tarih` — `ODUNC_GUN - 1` fazla çıkarıyor, sadece `ODUNC_GUN` olmalı  
+**Hata 5** (satır 67): `populer` — artan sıralıyor, `(-x[1], x[0])` ile azalan olmalı
+Tüm düzeltmeler yapıldı. Testleri çalıştırıyorum:
+8/8 yeşil. RAPOR.md'yi yazıyorum:
+Görev tamamlandı. Özet:
+
+---
+
+## Sonuç: 5 hata bulundu, 8/8 test yeşil ✅
+
+| # | Fonksiyon | Hata |
+|---|-----------|------|
+| 1 | `kitap_ekle` | `= adet` → `+= adet` (adet birikmiyordu) |
+| 2 | `musait` | İade edilmiş kayıtlar da sayılıyordu (`iade is None` filtresi eksikti) |
+| 3 | `odunc_ver` | `> MAKS_ODUNC` → `>= MAKS_ODUNC` (4. kitaba izin veriyordu) |
+| 4 | `son_tarih` | `ODUNC_GUN - 1` → `ODUNC_GUN` (son gün bir gün erken hesaplanıyordu) |
+| 5 | `populer` | `(x[1], x[0])` → `(-x[1], x[0])` (artan sıralıyordu, azalan lazım) |
+
+Detaylı açıklamalar [RAPOR.md](sonnet-4.6/3-hata-avi/RAPOR.md) dosyasında.

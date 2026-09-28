@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mayın Tarlası</title>
+<style>
+    body {
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        color: #333;
+    }
+    #durum {
+        margin: 10px 0;
+        font-size: 1.2rem;
+        font-weight: bold;
+        min-height: 1.5rem;
+    }
+    #board {
+        display: grid;
+        grid-template-columns: repeat(9, 40px);
+        grid-template-rows: repeat(9, 40px);
+        gap: 2px;
+        background-color: #999;
+        padding: 2px;
+        border: 2px solid #555;
+        border-radius: 4px;
+        user-select: none;
+    }
+    .cell {
+        background-color: #ccc;
+        border: 2px outset #eee;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .cell:active {
+        border-style: inset;
+    }
+    .cell.acik {
+        background-color: #e0e0e0;
+        border: 1px solid #999;
+        cursor: default;
+    }
+    .cell.bayrak::after {
+        content: '🚩';
+    }
+    .mine {
+        background-color: #f44 !important;
+    }
+    .mine::after {
+        content: '💣';
+    }
+    
+    /* Number colors */
+    .num-1 { color: blue; }
+    .num-2 { color: green; }
+    .num-3 { color: red; }
+    .num-4 { color: darkblue; }
+    .num-5 { color: darkred; }
+    .num-6 { color: teal; }
+    .num-7 { color: black; }
+    .num-8 { color: gray; }
+
+    #yeni {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+    }
+    #yeni:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+
+<h1>Mayın Tarlası</h1>
+<div id="durum"></div>
+<div id="board"></div>
+<button id="yeni">Yeni Oyun</button>
+
+<script>
+    const rows = 9;
+    const cols = 9;
+    const numMines = 10;
+    
+    let board = [];
+    let mines = null;
+    let gameOver = false;
+    let firstClick = true;
+    let openedCount = 0;
+
+    const boardElement = document.getElementById('board');
+    const durumElement = document.getElementById('durum');
+    const yeniButton = document.getElementById('yeni');
+
+    function initGame() {
+        board = [];
+        mines = null;
+        gameOver = false;
+        firstClick = true;
+        openedCount = 0;
+        durumElement.textContent = '';
+        boardElement.innerHTML = '';
+        
+        for (let r = 0; r < rows; r++) {
+            let row = [];
+            for (let c = 0; c < cols; c++) {
+                const cell = { r, c, isMine: false, isOpen: false, isFlagged: false, neighborMines: 0, element: null };
+                
+                const el = document.createElement('div');
+                el.classList.add('cell');
+                el.setAttribute('data-r', r);
+                el.setAttribute('data-c', c);
+                
+                el.addEventListener('click', () => handleLeftClick(r, c));
+                el.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    handleRightClick(r, c);
+                });
+                
+                cell.element = el;
+                boardElement.appendChild(el);
+                row.push(cell);
+            }
+            board.push(row);
+        }
+    }
+
+    function placeMines(firstR, firstC) {
+        mines = [];
+        const safeZone = [];
+        for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+                safeZone.push(`${firstR + dr},${firstC + dc}`);
+            }
+        }
+
+        let minesPlaced = 0;
+        while (minesPlaced < numMines) {
+            const r = Math.floor(Math.random() * rows);
+            const c = Math.floor(Math.random() * cols);
+            
+            if (!board[r][c].isMine && !safeZone.includes(`${r},${c}`)) {
+                board[r][c].isMine = true;
+                mines.push([r, c]);
+                minesPlaced++;
+            }
+        }
+        
+        // Calculate neighbor mines
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                if (!board[r][c].isMine) {
+                    let count = 0;
+                    for (let dr = -1; dr <= 1; dr++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            const nr = r + dr;
+                            const nc = c + dc;
+                            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && board[nr][nc].isMine) {
+                                count++;
+                            }
+                        }
+                    }
+                    board[r][c].neighborMines = count;
+                }
+            }
+        }
+    }
+
+    function handleLeftClick(r, c) {
+        if (gameOver) return;
+        const cell = board[r][c];
+        if (cell.isOpen || cell.isFlagged) return;
+
+        if (firstClick) {
+            placeMines(r, c);
+            firstClick = false;
+        }
+
+        if (cell.isMine) {
+            loseGame();
+        } else {
+            openCell(r, c);
+            checkWin();
+        }
+    }
+
+    function handleRightClick(r, c) {
+        if (gameOver) return;
+        const cell = board[r][c];
+        if (cell.isOpen) return;
+
+        cell.isFlagged = !cell.isFlagged;
+        if (cell.isFlagged) {
+            cell.element.classList.add('bayrak');
+        } else {
+            cell.element.classList.remove('bayrak');
+        }
+    }
+
+    function openCell(r, c) {
+        const cell = board[r][c];
+        if (cell.isOpen || cell.isFlagged) return;
+        
+        cell.isOpen = true;
+        cell.element.classList.add('acik');
+        openedCount++;
+
+        if (cell.neighborMines > 0) {
+            cell.element.textContent = cell.neighborMines;
+            cell.element.classList.add(`num-${cell.neighborMines}`);
+        } else {
+            cell.element.textContent = ''; // explicitly empty
+            // Auto open neighbors
+            for (let dr = -1; dr <= 1; dr++) {
+                for (let dc = -1; dc <= 1; dc++) {
+                    const nr = r + dr;
+                    const nc = c + dc;
+                    if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+                        openCell(nr, nc);
+                    }
+                }
+            }
+        }
+    }
+
+    function loseGame() {
+        gameOver = true;
+        durumElement.textContent = 'Kaybettin';
+        
+        // Reveal all mines
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                if (board[r][c].isMine) {
+                    board[r][c].element.classList.add('acik');
+                    board[r][c].element.classList.add('mine');
+                }
+            }
+        }
+    }
+
+    function checkWin() {
+        if (openedCount === (rows * cols - numMines)) {
+            gameOver = true;
+            durumElement.textContent = 'Kazandın';
+        }
+    }
+
+    window.mayinKonumlari = function() {
+        return mines;
+    };
+
+    yeniButton.addEventListener('click', initGame);
+
+    // Start
+    initGame();
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+Görevi anladım. `tr_metin.py` modülünü, testlerini ve raporu yazacağım.
+45 testin tamamı geçti. Şimdi raporu yazıyorum.
+Görev tamamlandı. İşte özet:
+
+---
+
+## Yapılanlar
+
+**3 dosya oluşturuldu:**
+
+| Dosya | İçerik |
+|---|---|
+| [`tr_metin.py`](sonnet-4.6/1-turkce-metin/tr_metin.py) | `buyuk`, `kucuk`, `slug`, `sayi_yaziya` fonksiyonları |
+| [`test_tr_metin.py`](sonnet-4.6/1-turkce-metin/test_tr_metin.py) | 45 pytest testi |
+| [`RAPOR.md`](sonnet-4.6/1-turkce-metin/RAPOR.md) | Görev raporu |
+
+**Test sonucu: `45 passed in 0.05s` ✅**
+
+### Temel tasarım notları
+- `buyuk`/`kucuk`: Python'un `.upper()`/`.lower()` Türkçe `İ↔i`, `I↔ı` dönüşümünü yanlış yapar; `str.maketrans` ile önceden takas edildi.
+- `slug`: `kucuk()` → Türkçe→ASCII tablo → regex ile `-` → baş/son `-` sil.
+- `sayi_yaziya`: `100→"yüz"`, `1000→"bin"` özel kuralları ayrıca ele alındı; `bool`/`float` için `TypeError`, sınır dışı için `ValueError` fırlatıyor.

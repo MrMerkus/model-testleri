@@ -1,0 +1,9 @@
+`kutuphane.py` içinde 5 hata buldum ve düzelttim. `python3 -m pytest -q` artık 8 testin hepsinde yeşil. `test_kutuphane.py`'ye dokunmadım.
+
+1. **`kitap_ekle`:** Aynı ISBN tekrar eklenince adet artmıyor, üzerine yazılıyordu. `+=` yaptım.
+2. **`musait`:** İade edilmiş ödünçler de "verilen" sayılıyordu, kitap rafa dönmüyordu. Artık yalnızca iade edilmemiş olanlar sayılıyor.
+3. **`odunc_ver`:** Limit kontrolü `>` idi ve dördüncü kitaba izin veriyordu. `>=` yaptım.
+4. **`son_tarih`:** `ODUNC_GUN - 1` kullanılıyordu. 1 Ocak'ta alınan kitabın son günü 14 Ocak çıkıyordu, olması gereken 15 Ocak. Fazladan çıkarmayı kaldırdım.
+5. **`populer`:** Sıralama azdan çoğa gidiyordu. Anahtarı `(-sayı, ad)` yaptım; çoktan aza, eşitlikte A-Z sıralıyor.
+
+`RAPOR.md` klasörde. İki yeri bilerek olduğu gibi bıraktım: `populer` iade edilmiş ödünçleri de sayıyor, `odunc_ver` bilinmeyen ISBN'de `KeyError` veriyor. İkisi de raporda yazılı.

@@ -1,0 +1,13 @@
+[EMIR.md](gemini-3.8-flash/3-hata-avi/EMIR.md) dosyasındaki görev tamamlandı.
+
+### Yapılan İşlemler Özeti:
+
+1. [kutuphane.py](gemini-3.8-flash/3-hata-avi/kutuphane.py) dosyasında 5 adet mantıksal hata tespit edildi ve kök nedenleri düzeltildi:
+   - **`kitap_ekle`**: Var olan ISBN tekrar eklendiğinde adedin üzerine yazılması (`= adet` yerine `+= adet`).
+   - **`musait`**: İade edilmiş kopyaların halen ödünçte sayılması (`o["iade"] is None` filtresi eklendi).
+   - **`odunc_ver`**: Maksimum ödünç limitinin 3 yerine 4'e izin vermesi (`> MAKS_ODUNC` yerine `>= MAKS_ODUNC`).
+   - **`son_tarih`**: Son gün hesabındaki 1 günlük sapma (`ODUNC_GUN - 1` yerine `ODUNC_GUN`).
+   - **`populer`**: Popülerlik sıralamasının azdan çoka yapılması (`key=lambda x: (x[1], x[0])` yerine `key=lambda x: (-x[1], x[0])`).
+
+2. [test_kutuphane.py](gemini-3.8-flash/3-hata-avi/test_kutuphane.py) dosyasına kesinlikle dokunulmadı; `python3 -m pytest -q` çalıştırıldı ve tüm testler (8/8) yeşil oldu.
+3. Detaylı açıklamaları içeren [RAPOR.md](gemini-3.8-flash/3-hata-avi/RAPOR.md) dosyası oluşturuldu.

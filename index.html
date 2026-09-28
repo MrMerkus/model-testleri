@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Model Testleri — 5 yapay zekâ, 3 görev</title>
+<meta name="description" content="Claude Sonnet 5.5, Opus 4.6, Sonnet 4.6, Gemini 3.8 Flash, Gemini 3.1 Pro ve Space Bunny aynı üç kodlama görevinde; gizli testlerle puanlandı.">
+<style>
+:root{--bg:#0f1117;--kart:#171a23;--cizgi:#262b38;--yazi:#e6e8ee;--soluk:#8b92a5;--vurgu:#d97757;--iyi:#4fb477;--kotu:#e5484d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--yazi);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1080px;margin:auto;padding:48px 20px 80px}
+h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.1;margin:0 0 12px;letter-spacing:-.02em}
+h1 em{font-style:normal;color:var(--vurgu)}h2{margin:56px 0 16px;font-size:1.5rem}
+.giris{color:var(--soluk);font-size:1.15rem;max-width:720px}
+.ozet{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:32px}
+.ozet div{background:var(--kart);border:1px solid var(--cizgi);border-radius:12px;padding:16px}
+.ozet b{display:block;font-size:1.6rem}.ozet span{color:var(--soluk);font-size:.9rem}
+.tablo{overflow-x:auto;border:1px solid var(--cizgi);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-variant-numeric:tabular-nums}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--cizgi)}
+thead th{font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:var(--soluk);background:var(--kart)}
+tbody tr:last-child>*{border-bottom:0}.ad{display:block;font-weight:600}.alt{font-size:.8rem;color:var(--soluk);font-weight:400}
+td.tam{color:var(--iyi)}td.eksik{color:var(--kotu)}td.puan{font-weight:700}
+.sure{min-width:160px}.bar{height:6px;background:var(--cizgi);border-radius:3px;margin-bottom:4px}.bar i{display:block;height:100%;background:var(--vurgu);border-radius:3px}
+.kartlar{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.kart{background:var(--kart);border:1px solid var(--cizgi);border-radius:12px;overflow:hidden}
+.kart img{width:100%;aspect-ratio:1;object-fit:cover;object-position:top;display:block;background:#000}
+.yok{aspect-ratio:1;display:grid;place-items:center;color:var(--soluk)}
+.kart-alt{display:flex;justify-content:space-between;padding:12px 14px 4px}.kart-alt span{color:var(--soluk);font-size:.9rem}
+.linkler{display:flex;gap:16px;padding:0 14px 14px}a{color:var(--vurgu)}
+.gorevler{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.gorevler article{background:var(--kart);border:1px solid var(--cizgi);border-radius:12px;padding:18px}
+.gorevler h3{margin:0 0 8px}.gorevler p{margin:0;color:var(--soluk)}
+.not{border-left:3px solid var(--vurgu);padding:4px 16px;color:var(--soluk)}
+footer{margin-top:64px;color:var(--soluk);font-size:.9rem}
+</style></head><body><main>
+<h1>5 yapay zekâ, 3 görev, <em>gizli testler</em></h1>
+<p class="giris">Aynı emirler, aynı klasör yapısı, insan müdahalesi yok. Her model görevini kendi
+komut satırı ajanında baştan sona yaptı; puanı modelin kendi raporu değil, modelin görmediği
+testler verdi. 28 Eylül 2026 — Claude Sonnet 5.5'in çıktığı gün.</p>
+<div class="ozet">
+<div><b>5/5</b><span>model tam puan aldı</span></div>
+<div><b>Claude Sonnet 5.5</b><span>en hızlı tam puan · 2 dk 29 sn</span></div>
+<div><b>70</b><span>gizli kontrol / model</span></div>
+<div><b>0</b><span>test dosyasını değiştiren model</span></div>
+</div>
+
+<h2>Sonuçlar</h2>
+<div class="tablo"><table>
+<thead><tr><th>Model</th><th>G1 Türkçe metin</th><th>G2 Mayın tarlası</th><th>G3 Hata avı</th><th>Toplam</th><th>Süre (3 görev)</th><th>Kendi testi</th><th>G3 test dosyası</th></tr></thead>
+<tbody><tr>
+<th scope="row"><span class="ad">Claude Sonnet 5.5</span><span class="alt">Anthropic · Claude Code CLI</span></th>
+<td class="tam">43/43</td><td class="tam">16/16</td><td class="tam">11/11</td>
+<td class="puan">70/70</td>
+<td class="sure"><div class="bar"><i style="width:19%"></i></div>2 dk 29 sn</td>
+<td>36</td><td>✓</td></tr><tr>
+<th scope="row"><span class="ad">Gemini 3.1 Pro</span><span class="alt">Google · Antigravity CLI</span></th>
+<td class="tam">43/43</td><td class="tam">16/16</td><td class="tam">11/11</td>
+<td class="puan">70/70</td>
+<td class="sure"><div class="bar"><i style="width:34%"></i></div>4 dk 20 sn</td>
+<td>4</td><td>✓</td></tr><tr>
+<th scope="row"><span class="ad">Claude Opus 4.6</span><span class="alt">Anthropic · Antigravity CLI</span></th>
+<td class="tam">43/43</td><td class="tam">16/16</td><td class="tam">11/11</td>
+<td class="puan">70/70</td>
+<td class="sure"><div class="bar"><i style="width:53%"></i></div>6 dk 43 sn</td>
+<td>44</td><td>✓</td></tr><tr>
+<th scope="row"><span class="ad">Claude Sonnet 4.6</span><span class="alt">Anthropic · Antigravity CLI</span></th>
+<td class="tam">43/43</td><td class="tam">16/16</td><td class="tam">11/11</td>
+<td class="puan">70/70</td>
+<td class="sure"><div class="bar"><i style="width:60%"></i></div>7 dk 34 sn</td>
+<td>45</td><td>✓</td></tr><tr>
+<th scope="row"><span class="ad">Gemini 3.8 Flash</span><span class="alt">Google · Antigravity CLI</span></th>
+<td class="tam">43/43</td><td class="tam">16/16</td><td class="tam">11/11</td>
+<td class="puan">70/70</td>
+<td class="sure"><div class="bar"><i style="width:100%"></i></div>12 dk 35 sn</td>
+<td>26</td><td>✓</td></tr></tbody></table></div>
+<p class="not">Henüz sürüyor: Space Bunny. Bitince tabloya eklenecek.</p>
+<p class="not">Doğrulukta ayrışma olmadı: tam puan alan her model görev 3'teki beş hatayı da aynı
+10 satırlık düzeltmeyle buldu. Bu tur için fark hızda ve modelin kendine yazdığı test
+sayısında. Daha zor ikinci tur planlanıyor.</p>
+
+<h2>Mayın tarlaları — kendin oyna</h2>
+<div class="kartlar"><article class="kart"><img src="_ekranlar/sonnet-5.5-kazandi.png" alt="Claude Sonnet 5.5 mayın tarlası, kazanılmış oyun" loading="lazy">
+<div class="kart-alt"><b>Claude Sonnet 5.5</b><span>16/16 · 1 dk 22 sn</span></div>
+<div class="linkler"><a href="sonnet-5.5/2-mayin-tarlasi/index.html">Oyna ▸</a>
+<a href="https://github.com/MrMerkus/model-testleri/tree/main/sonnet-5.5">Kod</a></div></article><article class="kart"><img src="_ekranlar/gemini-3.1-pro-kazandi.png" alt="Gemini 3.1 Pro mayın tarlası, kazanılmış oyun" loading="lazy">
+<div class="kart-alt"><b>Gemini 3.1 Pro</b><span>16/16 · 1 dk 37 sn</span></div>
+<div class="linkler"><a href="gemini-3.1-pro/2-mayin-tarlasi/index.html">Oyna ▸</a>
+<a href="https://github.com/MrMerkus/model-testleri/tree/main/gemini-3.1-pro">Kod</a></div></article><article class="kart"><img src="_ekranlar/opus-4.6-kazandi.png" alt="Claude Opus 4.6 mayın tarlası, kazanılmış oyun" loading="lazy">
+<div class="kart-alt"><b>Claude Opus 4.6</b><span>16/16 · 3 dk 00 sn</span></div>
+<div class="linkler"><a href="opus-4.6/2-mayin-tarlasi/index.html">Oyna ▸</a>
+<a href="https://github.com/MrMerkus/model-testleri/tree/main/opus-4.6">Kod</a></div></article><article class="kart"><img src="_ekranlar/sonnet-4.6-kazandi.png" alt="Claude Sonnet 4.6 mayın tarlası, kazanılmış oyun" loading="lazy">
+<div class="kart-alt"><b>Claude Sonnet 4.6</b><span>16/16 · 4 dk 03 sn</span></div>
+<div class="linkler"><a href="sonnet-4.6/2-mayin-tarlasi/index.html">Oyna ▸</a>
+<a href="https://github.com/MrMerkus/model-testleri/tree/main/sonnet-4.6">Kod</a></div></article><article class="kart"><img src="_ekranlar/gemini-3.8-flash-kazandi.png" alt="Gemini 3.8 Flash mayın tarlası, kazanılmış oyun" loading="lazy">
+<div class="kart-alt"><b>Gemini 3.8 Flash</b><span>16/16 · 7 dk 25 sn</span></div>
+<div class="linkler"><a href="gemini-3.8-flash/2-mayin-tarlasi/index.html">Oyna ▸</a>
+<a href="https://github.com/MrMerkus/model-testleri/tree/main/gemini-3.8-flash">Kod</a></div></article></div>
+
+<h2>Görevler</h2>
+<div class="gorevler">
+<article><h3>1 · Türkçe metin araçları</h3><p>İ/ı kuralıyla büyük-küçük harf, URL kısa adı ve
+sayıyı yazıya çevirme ("bin" ama "bir milyon"). 43 gizli test.</p>
+<a href="_gorevler/1-turkce-metin/EMIR.md">Emir</a> · <a href="hakem/1/test_gizli.py">Gizli testler</a></article>
+<article><h3>2 · Mayın tarlası</h3><p>Tek HTML dosyası. İlk tık güvenli, zincirleme açılma,
+bayrak, kazan/kaybet. Gerçek tarayıcıda 16 otomatik kontrol.</p>
+<a href="_gorevler/2-mayin-tarlasi/EMIR.md">Emir</a> · <a href="hakem/2/mayin_hakem.js">Tarayıcı hakemi</a></article>
+<article><h3>3 · Hata avı</h3><p>Beş gizli hatalı bir ödünç sistemi. Test dosyasına dokunmadan
+düzelt; görünmeyen 11 testle kökten mi düzeltildiği sınandı.</p>
+<a href="_gorevler/3-hata-avi/EMIR.md">Emir</a> · <a href="hakem/3/test_gizli.py">Gizli testler</a></article>
+</div>
+
+<h2>Yöntem</h2>
+<p>Her model yalnız kendi klasöründe, görev başına 25 dakika sınırla çalıştı (<a href="calistir.sh">calistir.sh</a>).
+Gizli testler çalışma sırasında depo dışında tutuldu. Puanlama <a href="hakem/puanla.py">hakem/puanla.py</a>
+ile yapıldı; ham sonuç <a href="_puanlar.json">_puanlar.json</a>. Süreler duvar saati; modellerin
+çalıştığı araçlar (Claude Code, Antigravity, omp) farklı olduğundan hız, model + araç ikilisinin hızıdır.</p>
+
+<footer>Model Testleri · <a href="https://github.com/MrMerkus/model-testleri">GitHub</a></footer>
+</main></body></html>

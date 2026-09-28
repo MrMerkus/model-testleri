@@ -1,0 +1,17 @@
+Working...
+Bitti.
+
+**Dosyalar** (yalnız bu klasörde): `index.html`, `test_mayin.py`, `RAPOR.md`.
+
+**Ne çalışıyor**
+- 9×9 / 10 mayın, ilk tıklamada mayınlar yerleşiyor; tıklanan hücre ve 8 komşusu (kenarda 4–6) mayınsız.
+- Zincirleme açılış kuyrukla; rakam = gerçek komşu mayın sayısı, 0 hücre boş.
+- Sağ tık bayrak; bayraklı hücre açılmıyor, açık hücre bayraklanmıyor.
+- Kayıpta bütün mayınlar görünüyor (bastığın mayın kırmızı çerçeveli, yanlış bayraklar soluk); kazanmada bayraklanmamış mayınlar yeşil "temiz" işaretleniyor. Oyun bittikten sonra tıklamalar tahtayı değiştirmiyor.
+- `#yeni` sıfırlıyor, `window.mayinKonumlari()` ilk tıklamadan önce `null`.
+
+**Doğrulama** — `python3 -m pytest`, Playwright/Chromium'da gerçek tarayıcı: 20 test, üst üste üç koşuda **20/20 geçti**. Sözleşmenin her maddesi ayrı testte; ayrıca 20 rastgele tam oyun. Elle oynayıp ekran görüntülerini inceledim (başlangıç/oyun/kazanma/kaybetme/320 px), konsolda hata yok.
+
+Yol boyunca bulup düzelttiğim gerçek hata: sabit 34 px sütunlar 382 px'lik kapsayıcıda sağda 60 px'lik ölü şerit bırakıyordu (ekran görüntüsünde sağ sütun tek bir blok gibi görünüyordu) → tahta `1fr` + `aspect-ratio: 1` ile kapsayıcıyı dolduruyor.
+
+**Emin olmadıklarım** (RAPOR.md'de de yazılı): `acik` sınıfını yalnızca oyuncu tıklamasıyla açılan hücrelere verdim, oyun sonunda gösterilen mayınlara vermedim — kazanmada `.acik` sayısı tam 71 oluyor; tersini bekleyen bir kontrol varsa tek satırlık değişiklik. Yanlış bayraklanan temiz hücre kazanmayı engelliyor (kuralın birebir uygulanması; klasik davranış da böyle). Bayrak için `⚑` karakteri kullandım, renkli emoji olarak çizilirse CSS rengini yutuyor. Dokunmatik jest (uzun basma → bayrak) eklemedim, istenmemişti.

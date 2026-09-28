@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>Mayın (referans)</title>
+<style>
+body{font-family:sans-serif;background:#1d2230;color:#eee;display:flex;flex-direction:column;align-items:center}
+#tahta{display:grid;grid-template-columns:repeat(9,40px);gap:3px;margin:16px}
+.h{width:40px;height:40px;background:#4a5570;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:bold;cursor:pointer;user-select:none}
+.h.acik{background:#d9dde6;color:#223}.h.bayrak::after{content:"🚩"}.h.mayin{background:#c0392b}
+</style></head><body>
+<h1>Mayın tarlası</h1><div id="durum">Oyna</div><button id="yeni">Yeni oyun</button><div id="tahta"></div>
+<script>
+const N=9,K=10;let mayin=null,acik,bayrak,bitti;const t=document.getElementById('tahta'),d=document.getElementById('durum');
+const hc=(r,c)=>t.children[r*N+c];
+const komsu=(r,c)=>{const k=[];for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const x=r+a,y=c+b;if((a||b)&&x>=0&&x<N&&y>=0&&y<N)k.push([x,y])}return k};
+const say=(r,c)=>komsu(r,c).filter(([x,y])=>mayin.has(x*N+y)).length;
+function kur(){t.innerHTML='';mayin=null;acik=new Set;bayrak=new Set;bitti=false;d.textContent='Oyna';
+ for(let r=0;r<N;r++)for(let c=0;c<N;c++){const e=document.createElement('div');e.className='h';e.dataset.r=r;e.dataset.c=c;
+ e.onclick=()=>tikla(r,c);e.oncontextmenu=v=>{v.preventDefault();isaret(r,c)};t.appendChild(e)}}
+function yerlestir(r,c){const yasak=new Set([[r,c],...komsu(r,c)].map(([x,y])=>x*N+y));mayin=new Set;
+ while(mayin.size<K){const i=Math.floor(Math.random()*N*N);if(!yasak.has(i))mayin.add(i)}}
+function ac(r,c){const i=r*N+c;if(acik.has(i)||bayrak.has(i))return;acik.add(i);const e=hc(r,c);e.classList.add('acik');
+ const n=say(r,c);e.textContent=n||'';if(!n)komsu(r,c).forEach(([x,y])=>ac(x,y))}
+function tikla(r,c){if(bitti||bayrak.has(r*N+c))return;if(!mayin)yerlestir(r,c);
+ if(mayin.has(r*N+c)){bitti=true;d.textContent='Kaybettin';mayin.forEach(i=>t.children[i].classList.add('mayin'));return}
+ ac(r,c);if(acik.size===N*N-K){bitti=true;d.textContent='Kazandın!'}}
+function isaret(r,c){const i=r*N+c;if(bitti||acik.has(i))return;bayrak.has(i)?bayrak.delete(i):bayrak.add(i);hc(r,c).classList.toggle('bayrak')}
+window.mayinKonumlari=()=>mayin?[...mayin].map(i=>[Math.floor(i/N),i%N]):null;
+document.getElementById('yeni').onclick=kur;kur();
+</script></body></html>

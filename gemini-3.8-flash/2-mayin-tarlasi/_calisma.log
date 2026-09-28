@@ -1,0 +1,31 @@
+Birkaç saniye içinde ekran görüntüsü alınacak. Tamamlanmasını bekliyorum.
+Ekran görüntüleri alınıyor, tamamlanmasını bekliyorum.
+Görev tamamlanıyor, çıktıyı bekliyorum.
+Görev devam ediyor, tamamlandığında otomatik bildirim alınacak.
+Ekran görüntüleri arka planda alınıyor, bildirim bekleniyor.
+[EMIR.md](gemini-3.8-flash/2-mayin-tarlasi/EMIR.md) içindeki tüm kurallar ve test edilebilirlik sözleşmesi eksiksiz uygulanarak görev tamamlandı.
+
+### Neler Yapıldı?
+1. **[index.html](gemini-3.8-flash/2-mayin-tarlasi/index.html)**:
+   - **Tek dosya & sıfır dış kaynak**: Harici font, resim, CDN veya harici dosya olmaksızın tüm CSS ve JavaScript tek bir dosya içinde toplandı.
+   - **9×9 ızgara & 10 mayın**: 81 hücre statik HTML olarak yerleştirildi ve dinamik mantıkla bağlandı.
+   - **İlk tıklama güvenli bölgesi**: İlk tıklanan hücre ve çevresindeki 8 komşu (3×3 alan) mayın yerleşiminden hariç tutuldu; mayınlar bu ilk tıklamadan sonra rastgele yerleştirildi. Böylece ilk hücre garantili 0 komşulu olup zincirleme açılışı başlattı.
+   - **Zincirleme açılış (BFS Flood Fill)**: Sayısı 0 olan hücreler boş görünüp komşularını otomatik açtı.
+   - **Bayrak ve koruma**: Sağ tıkla (`contextmenu`) bayrak koyma/kaldırma eklendi, varsayılan menü engellendi ve bayraklı hücreler sol tıkla açılmaya karşı korundu.
+   - **Kazanma ve kaybetme kuralları**: Mayına basılınca tüm mayınlar açıldı ve `#durum` içine `Kaybettin` yazıldı. 71 güvenli hücre açılınca `#durum` içine `Kazandın` yazıldı. Oyun bitince yeni tıklamalar donduruldu.
+   - **Test edilebilirlik sözleşmesi**:
+     - Her hücrede `data-r` (0–8) ve `data-c` (0–8) tanımlandı.
+     - Açılan hücreler `acik`, bayraklılar `bayrak`, mayınlar `mayin` sınıfı aldı.
+     - Açılmış sayılı hücre metni yalnız o rakam (`"1"`..`"8"`), 0 sayılı hücre metni ise boş dize (`""`) oldu.
+     - `#durum` ve `#yeni` kimlikleri sağlandı.
+     - `window.mayinKonumlari()` fonksiyonu ilk tıklamadan önce `null`, sonra 10 mayının `[[r, c], ...]` koordinatlarını dönecek ve sıfırlamada `null` olacak şekilde bağlandı.
+   - **Görsel tasarım**: Modern koyu tema, dijital sayaçlar, LED göstergeler, durum ifadeleri ve yüksek kontrastlı sayılarla estetik bir arayüz oluşturuldu.
+
+2. **[test_mayin_tarlasi.py](gemini-3.8-flash/2-mayin-tarlasi/test_mayin_tarlasi.py)**:
+   - `python3 -m pytest` ile çalıştırılan 10 sözleşme testinin tamamı başarıyla geçti (`10 passed in 0.30s`).
+
+3. **Görsel Kontrol**:
+   - `firefox --headless --screenshot` ile başlangıç ([ekran.png](gemini-3.8-flash/2-mayin-tarlasi/ekran.png)), oynanış ([ekran_oyun.png](gemini-3.8-flash/2-mayin-tarlasi/ekran_oyun.png)), kaybetme ([ekran_kayip.png](gemini-3.8-flash/2-mayin-tarlasi/ekran_kayip.png)) ve kazanma ([ekran_kazanc.png](gemini-3.8-flash/2-mayin-tarlasi/ekran_kazanc.png)) durumları doğrulanarak kaydedildi.
+
+4. **[RAPOR.md](gemini-3.8-flash/2-mayin-tarlasi/RAPOR.md)**:
+   - Yapılan işler, deneme yöntemleri ve tasarım tercihleri detaylıca belgelendi.
